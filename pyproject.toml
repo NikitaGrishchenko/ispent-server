@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "ispent-backend"
+version = "0.1.0"
+description = ""
+authors = ["Nikita <grishchenkonikita@mail.ru>"]
+readme = "README.md"
+packages = [{include = "ispent_backend"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.103.1"
+sqlalchemy = "^2.0.21"
+alembic = "^1.12.0"
+psycopg2 = "^2.9.7"
+uvicorn = "^0.23.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
