@@ -4,7 +4,7 @@ uvicorn src.main:app --reload
 
 alembic init migrations
 alembic revision --autogenerate -m "User table"
-alembic upgrade 816252f76c81
+alembic upgrade head
 
 1 Доход 
 0 Расход
