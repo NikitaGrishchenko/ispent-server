@@ -20,10 +20,10 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     id_telegram = Column(Integer, unique=True, nullable=False)
-    username = Column(String)
-    first_name = Column(String)
-    last_name = Column(String)
-    language_code = Column(String)
+    username = Column(String(255))
+    first_name = Column(String(255))
+    last_name = Column(String(255))
+    language_code = Column(String(255))
     is_bot = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.now)
 
@@ -33,7 +33,7 @@ class CategoryUser(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
-    name = Column(String(length=255), nullable=False)
+    name = Column(String(255), nullable=False)
     kind = Column(Enum(KindOperationEnum), nullable=False)
     __table_args__ = (
         UniqueConstraint("user_id", "name", "kind", name="_unique_catagory_user"),
