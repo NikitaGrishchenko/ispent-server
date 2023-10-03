@@ -12,6 +12,7 @@ DOCKER_DB_NAME = str(os.getenv("DOCKER_DB_NAME"))
 DOCKER_DB_USER = str(os.getenv("DOCKER_DB_USER"))
 DOCKER_DB_PASSWORD = str(os.getenv("DOCKER_DB_PASSWORD"))
 DOCKER_DB_HOST = str(os.getenv("DOCKER_DB_HOST"))
+DOCKER_DB_PORT = str(os.getenv("DOCKER_DB_PORT"))
 
 
 DEFAULT_USER_OPERATION = [

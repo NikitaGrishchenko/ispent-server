@@ -3,15 +3,27 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from src.config import DATABASE_URL
-from src.models.models import metadata
+from src.config import (
+    DOCKER_DB_HOST,
+    DOCKER_DB_NAME,
+    DOCKER_DB_PASSWORD,
+    DOCKER_DB_PORT,
+    DOCKER_DB_USER,
+)
+from src.database import Base
+from src.user.models import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-section = config.config_ini_section
-config.set_section_option(section, "DATABASE_URL", DATABASE_URL)
+# section = config.config_ini_section
+# config.set_section_option(section, "DATABASE_URL", DATABASE_URL)
+
+config.set_main_option(
+    "sqlalchemy.url",
+    f"postgresql+psycopg2://{DOCKER_DB_USER}:{DOCKER_DB_PASSWORD}@{DOCKER_DB_HOST}:{DOCKER_DB_PORT}/{DOCKER_DB_NAME}",
+)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -22,7 +34,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = metadata
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
