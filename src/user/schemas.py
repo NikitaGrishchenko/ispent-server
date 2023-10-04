@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+from src.operation.enum import KindOperationEnum
+
 
 class User(BaseModel):
     id: int
@@ -21,7 +23,7 @@ class CategoryUser(BaseModel):
     id: int
     user_id: int
     name: str
-    kind: str
+    kind: KindOperationEnum
 
     class Config:
         from_attributes = True
