@@ -3,7 +3,7 @@ ispent-backend
 uvicorn src.main:app --reload
 
 alembic init migrations
-alembic revision --autogenerate -m "User table"
+alembic revision --autogenerate -m "Initial models"
 alembic upgrade head
 
 1 Доход 

@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class Operation(BaseModel):
     id: int
     user_id: int
-    category: str
+    category_user_id: int
     kind: str
     amount: float
     date: datetime

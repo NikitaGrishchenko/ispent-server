@@ -1,8 +1,8 @@
-"""initial
+"""Initial models
 
-Revision ID: f85b76651091
+Revision ID: 70efce8d64e6
 Revises: 
-Create Date: 2023-10-03 15:53:50.552424
+Create Date: 2023-10-04 13:13:50.623039
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'f85b76651091'
+revision: str = '70efce8d64e6'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -23,10 +23,10 @@ def upgrade() -> None:
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('id_telegram', sa.Integer(), nullable=False),
-    sa.Column('username', sa.String(), nullable=True),
-    sa.Column('first_name', sa.String(), nullable=True),
-    sa.Column('last_name', sa.String(), nullable=True),
-    sa.Column('language_code', sa.String(), nullable=True),
+    sa.Column('username', sa.String(length=255), nullable=True),
+    sa.Column('first_name', sa.String(length=255), nullable=True),
+    sa.Column('last_name', sa.String(length=255), nullable=True),
+    sa.Column('language_code', sa.String(length=255), nullable=True),
     sa.Column('is_bot', sa.Boolean(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
@@ -46,10 +46,11 @@ def upgrade() -> None:
     op.create_table('operation',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('category', sa.String(length=255), nullable=False),
+    sa.Column('category_user_id', sa.Integer(), nullable=False),
     sa.Column('kind', sa.Enum('INCOME', 'EXPENSE', name='kindoperationenum'), nullable=False),
     sa.Column('amount', sa.Float(), nullable=False),
     sa.Column('date', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['category_user_id'], ['category_user.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )

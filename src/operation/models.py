@@ -12,7 +12,9 @@ class Operation(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
-    category = Column(String(255), nullable=False)
+    category_user_id = Column(
+        Integer, ForeignKey("category_user.id", ondelete="CASCADE"), nullable=False
+    )
     kind = Column(Enum(KindOperationEnum), nullable=False)
     amount = Column(Float, nullable=False)
     date = Column(DateTime, default=datetime.now)
