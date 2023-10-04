@@ -3,8 +3,27 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 
-def get_user(db: Session, user_id: int):
+def get_user_by_id(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
+
+
+def get_user_by_id_telegram(db: Session, id_telegram: int):
+    return db.query(models.User).filter(models.User.id_telegram == id_telegram).first()
+
+
+def create_user(db: Session, user: schemas.User):
+    db_user = models.User(
+        id_telegram=user.id_telegram,
+        username=user.username,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        language_code=user.language_code,
+        is_bot=user.is_bot,
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
 
 # def get_user_by_email(db: Session, email: str):

@@ -14,7 +14,7 @@ class User(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class CategoryUser(BaseModel):
@@ -24,4 +24,4 @@ class CategoryUser(BaseModel):
     kind: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
