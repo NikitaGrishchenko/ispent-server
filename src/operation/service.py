@@ -1,18 +1,18 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.user.service import get_user_by_id_telegram
 
 from . import models, schemas
 
 
-def get_operations(db: Session, id_telegram: int):
+def get_operations(db: AsyncSession, id_telegram: int):
     db_user = get_user_by_id_telegram(db, id_telegram)
     return (
         db.query(models.Operation).filter(models.Operation.user_id == db_user.id).all()
     )
 
 
-def create_operation(db: Session, operation: schemas.Operation):
+def create_operation(db: AsyncSession, operation: schemas.Operation):
     db_operation = models.Operation(
         user_id=operation.user_id,
         category_user_id=operation.category_user_id,

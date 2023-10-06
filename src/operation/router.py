@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.database import get_db
+from src.database import get_async_session
 
 from . import schemas, service
 
@@ -11,7 +11,7 @@ router = APIRouter(
 
 
 @router.get("/{id_telegram}", response_model=list[schemas.Operation])
-def read_operations(id_telegram: int, db: Session = Depends(get_db)):
+def read_operations(id_telegram: int, db: AsyncSession = Depends(get_async_session)):
     db_operations = service.get_operations(db, id_telegram)
     if db_operations is None:
         raise HTTPException(status_code=404, detail="Operations not found")
@@ -27,5 +27,7 @@ def read_operations(id_telegram: int, db: Session = Depends(get_db)):
 
 
 @router.post("/create/", response_model=schemas.Operation)
-def create_operation(operation: schemas.Operation, db: Session = Depends(get_db)):
+def create_operation(
+    operation: schemas.Operation, db: AsyncSession = Depends(get_async_session)
+):
     return service.create_operation(db=db, operation=operation)

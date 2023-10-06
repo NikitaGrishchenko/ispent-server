@@ -1,32 +1,32 @@
-from sqlalchemy.orm import Session
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import models, schemas
 
 
-def get_user_by_id(db: Session, id_user: int):
+def get_user_by_id(db: AsyncSession, id_user: int):
     return db.query(models.User).filter(models.User.id == id_user).first()
 
 
-def get_user_by_id_telegram(db: Session, id_telegram: int):
+def get_user_by_id_telegram(db: AsyncSession, id_telegram: int):
     return db.query(models.User).filter(models.User.id_telegram == id_telegram).first()
 
 
-def create_user(db: Session, user: schemas.User):
-    db_user = models.User(
+def create_user(session: AsyncSession, user: schemas.User):
+    new_user = models.User(
         id_telegram=user.id_telegram,
         username=user.username,
         first_name=user.first_name,
         last_name=user.last_name,
         language_code=user.language_code,
         is_bot=user.is_bot,
+        hashed_password=user.hashed_password,
     )
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+    session.add(new_user)
+    return new_user
 
 
-def get_categories_user(db: Session, id_telegram: int):
+def get_categories_user(db: AsyncSession, id_telegram: int):
     db_user = get_user_by_id_telegram(db, id_telegram)
     return (
         db.query(models.CategoryUser)
@@ -35,11 +35,12 @@ def get_categories_user(db: Session, id_telegram: int):
     )
 
 
-def get_users(db: Session):
-    return db.query(models.User).all()
+async def get_users(session: AsyncSession):
+    db_users = await session.execute(select(models.User))
+    return db_users.scalars().all()
 
 
-def get_category_user(db: Session, category_user: schemas.CategoryUser):
+def get_category_user(db: AsyncSession, category_user: schemas.CategoryUser):
     return (
         db.query(models.CategoryUser)
         .filter(models.CategoryUser.user_id == category_user.user_id)
@@ -49,7 +50,7 @@ def get_category_user(db: Session, category_user: schemas.CategoryUser):
     )
 
 
-def create_category_user(db: Session, category_user: schemas.CategoryUser):
+def create_category_user(db: AsyncSession, category_user: schemas.CategoryUser):
     db_category_user = models.CategoryUser(
         user_id=category_user.user_id,
         name=category_user.name,

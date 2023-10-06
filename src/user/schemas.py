@@ -14,6 +14,10 @@ class User(BaseModel):
     language_code: str | None = None
     is_bot: bool | None = None
     created_at: datetime
+    hashed_password: str
+    is_active: bool
+    is_superuser: bool
+    is_verified: bool
 
     class Config:
         from_attributes = True

@@ -1,8 +1,8 @@
 """Initial models
 
-Revision ID: 70efce8d64e6
+Revision ID: acb2fddf50a6
 Revises: 
-Create Date: 2023-10-04 13:13:50.623039
+Create Date: 2023-10-06 16:10:42.053450
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '70efce8d64e6'
+revision: str = 'acb2fddf50a6'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -29,6 +29,10 @@ def upgrade() -> None:
     sa.Column('language_code', sa.String(length=255), nullable=True),
     sa.Column('is_bot', sa.Boolean(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.Column('hashed_password', sa.String(length=1024), nullable=False),
+    sa.Column('is_active', sa.Boolean(), nullable=False),
+    sa.Column('is_superuser', sa.Boolean(), nullable=False),
+    sa.Column('is_verified', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id_telegram')
     )
