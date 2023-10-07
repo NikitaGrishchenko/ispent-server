@@ -143,5 +143,3 @@ cython_debug/
 
 # data
 pgdata/
-
-poetry.lock
