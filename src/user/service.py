@@ -4,15 +4,18 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from . import models, schemas
 
 
-def get_user_by_id(db: AsyncSession, id_user: int):
-    return db.query(models.User).filter(models.User.id == id_user).first()
+async def get_user_by_id(session: AsyncSession, id_user: int):
+    return await session.get(models.User, id_user)
 
 
-def get_user_by_id_telegram(db: AsyncSession, id_telegram: int):
-    return db.query(models.User).filter(models.User.id_telegram == id_telegram).first()
+async def get_user_by_id_telegram(session: AsyncSession, id_telegram: int):
+    stmt = select(models.User).where(models.User.id_telegram == id_telegram)
+    user = await session.execute(stmt)
+    return user.scalar()
 
 
-def create_user(session: AsyncSession, user: schemas.User):
+async def create_user(session: AsyncSession, user: schemas.User):
+    # new_user = models.User(**user_in.model_dump())
     new_user = models.User(
         id_telegram=user.id_telegram,
         username=user.username,
@@ -23,16 +26,16 @@ def create_user(session: AsyncSession, user: schemas.User):
         hashed_password=user.hashed_password,
     )
     session.add(new_user)
+    await session.commit()
     return new_user
 
 
-def get_categories_user(db: AsyncSession, id_telegram: int):
-    db_user = get_user_by_id_telegram(db, id_telegram)
-    return (
-        db.query(models.CategoryUser)
-        .filter(models.CategoryUser.user_id == db_user.id)
-        .all()
+async def get_categories_user(session: AsyncSession, id_telegram: int):
+    user = await get_user_by_id_telegram(session, id_telegram)
+    categories_user = await session.execute(
+        select(models.CategoryUser).where(models.CategoryUser.user_id == user.id)
     )
+    return categories_user.scalars().all()
 
 
 async def get_users(session: AsyncSession):
@@ -40,26 +43,28 @@ async def get_users(session: AsyncSession):
     return db_users.scalars().all()
 
 
-def get_category_user(db: AsyncSession, category_user: schemas.CategoryUser):
-    return (
-        db.query(models.CategoryUser)
-        .filter(models.CategoryUser.user_id == category_user.user_id)
-        .filter(models.CategoryUser.name == category_user.name)
-        .filter(models.CategoryUser.kind == category_user.kind)
-        .first()
+async def get_category_user(session: AsyncSession, category_user: schemas.CategoryUser):
+    stmt = (
+        select(models.CategoryUser)
+        .where(models.CategoryUser.user_id == category_user.user_id)
+        .where(models.CategoryUser.name == category_user.name)
+        .where(models.CategoryUser.kind == category_user.kind)
     )
+    category_user = await session.execute(stmt)
+    return category_user.scalar()
 
 
-def create_category_user(db: AsyncSession, category_user: schemas.CategoryUser):
-    db_category_user = models.CategoryUser(
+async def create_category_user(
+    session: AsyncSession, category_user: schemas.CategoryUser
+):
+    new_category_user = models.CategoryUser(
         user_id=category_user.user_id,
         name=category_user.name,
         kind=category_user.kind,
     )
-    db.add(db_category_user)
-    db.commit()
-    db.refresh(db_category_user)
-    return db_category_user
+    session.add(new_category_user)
+    await session.commit()
+    return new_category_user
 
 
 # def get_user_by_email(db: Session, email: str):

@@ -11,7 +11,7 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data/
     ports:
-      - "${DOCKER_DB_PORT}:${DOCKER_DB_PORT}"
+      - 5432:5432
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4
