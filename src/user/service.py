@@ -23,7 +23,8 @@ async def create_user(session: AsyncSession, user: schemas.User):
         last_name=user.last_name,
         language_code=user.language_code,
         is_bot=user.is_bot,
-        hashed_password=user.hashed_password,
+        # hashed_password=get_user_manager.password_helper.hash(user.password),
+        email="nikita",
     )
     session.add(new_user)
     await session.commit()
