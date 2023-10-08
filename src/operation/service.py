@@ -6,9 +6,8 @@ from src.user.service import get_user_by_id_telegram
 from . import models, schemas
 
 
-async def get_operations(session: AsyncSession, id_telegram: int):
-    db_user = await get_user_by_id_telegram(session, id_telegram)
-    stmt = select(models.Operation).where(models.Operation.user_id == db_user.id)
+async def get_operations(session: AsyncSession, user_id: int):
+    stmt = select(models.Operation).where(models.Operation.user_id == user_id)
     operations = await session.execute(stmt)
     return operations.scalars().all()
 

@@ -14,27 +14,26 @@ async def get_user_by_id_telegram(session: AsyncSession, id_telegram: int):
     return user.scalar()
 
 
-async def create_user(session: AsyncSession, user: schemas.User):
-    # new_user = models.User(**user_in.model_dump())
-    new_user = models.User(
-        id_telegram=user.id_telegram,
-        username=user.username,
-        first_name=user.first_name,
-        last_name=user.last_name,
-        language_code=user.language_code,
-        is_bot=user.is_bot,
-        # hashed_password=get_user_manager.password_helper.hash(user.password),
-        email="nikita",
-    )
-    session.add(new_user)
-    await session.commit()
-    return new_user
+# async def create_user(session: AsyncSession, user: schemas.User):
+#     # new_user = models.User(**user_in.model_dump())
+#     new_user = models.User(
+#         id_telegram=user.id_telegram,
+#         username=user.username,
+#         first_name=user.first_name,
+#         last_name=user.last_name,
+#         language_code=user.language_code,
+#         is_bot=user.is_bot,
+#         # hashed_password=get_user_manager.password_helper.hash(user.password),
+#         email="nikita",
+#     )
+#     session.add(new_user)
+#     await session.commit()
+#     return new_user
 
 
-async def get_categories_user(session: AsyncSession, id_telegram: int):
-    user = await get_user_by_id_telegram(session, id_telegram)
+async def get_categories_user(session: AsyncSession, user_id: int):
     categories_user = await session.execute(
-        select(models.CategoryUser).where(models.CategoryUser.user_id == user.id)
+        select(models.CategoryUser).where(models.CategoryUser.user_id == user_id)
     )
     return categories_user.scalars().all()
 
