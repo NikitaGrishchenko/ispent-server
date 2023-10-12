@@ -12,7 +12,10 @@ from src.user.schemas import UserCreate, UserRead, UserUpdate
 app = FastAPI(title="ispent")
 
 origins = [
+    "http://localhost",
     "http://localhost:9000",
+    "http://127.0.0.1",
+    "http://127.0.0.1:9000",
 ]
 
 app.add_middleware(

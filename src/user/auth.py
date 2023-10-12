@@ -10,7 +10,12 @@ from src.config import SECRET
 from .manager import get_user_manager
 from .models import User
 
-cookie_transport = CookieTransport(cookie_max_age=3600)
+cookie_transport = CookieTransport(
+    cookie_max_age=3600,
+    cookie_name="ispent-jwt",
+    cookie_samesite="lax",
+    cookie_secure=False,
+)
 
 
 def get_jwt_strategy() -> JWTStrategy:
