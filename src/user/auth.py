@@ -15,6 +15,7 @@ cookie_transport = CookieTransport(
     cookie_name="ispent-jwt",
     cookie_samesite="lax",
     cookie_secure=False,
+    cookie_httponly=False,
 )
 
 
