@@ -50,14 +50,6 @@ async def read_user_by_id_telegram(
     )
 
 
-# @router.post("/create/", response_model=schemas.User)
-# async def create_user(
-#     user: schemas.User, session: AsyncSession = Depends(get_async_session)
-# ):
-#     new_user = await service.create_user(session, user)
-#     return new_user
-
-
 @router.get("/categories/", response_model=list[schemas.CategoryUser])
 async def read_categories_user(
     user: schemas.User = Depends(current_active_user),
@@ -80,3 +72,21 @@ async def create_category_user(
             detail="User category already exists",
         )
     return await service.create_category_user(session, category_user)
+
+
+@router.get("/overview/", response_model=schemas.OverviewUser)
+async def read_overview_user(
+    user: schemas.User = Depends(current_active_user),
+    session: AsyncSession = Depends(get_async_session),
+):
+    (
+        total_balance,
+        monthly_income,
+        monthly_expenses,
+    ) = await service.get_overview_data_user(session, user.id)
+
+    return {
+        "total_balance": total_balance,
+        "monthly_income": monthly_income,
+        "monthly_expenses": monthly_expenses,
+    }

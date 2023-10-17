@@ -1,14 +1,10 @@
 ispent-backend
 
-uvicorn src.main:app --reload
+poetry run uvicorn src.main:app --reload
 
-alembic init migrations
-alembic revision --autogenerate -m "pass2"
-alembic upgrade head
-
-1 Доход 
-0 Расход
-
+poetry run alembic init migrations
+poetry run alembic revision --autogenerate -m "pass2"
+poetry run alembic upgrade head
 
 после создания приложения прописать пути для alembic models в migrations/env.py
 from src.user.models import User

@@ -1,9 +1,11 @@
 from datetime import datetime
+from typing import List
 
 from fastapi_users import schemas
 from pydantic import BaseModel
 
 from src.operation.enum import KindOperationEnum
+from src.operation.schemas import Operation
 
 
 class User(BaseModel):
@@ -69,3 +71,13 @@ class UserCreate(schemas.BaseUserCreate):
 
 class UserUpdate(schemas.BaseUserUpdate):
     pass
+
+
+class OverviewUser(BaseModel):
+    total_balance: float
+    monthly_income: float
+    monthly_expenses: float
+    # last_operations: list[Operation]
+
+    class Config:
+        from_attributes = True

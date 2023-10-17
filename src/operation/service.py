@@ -1,8 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.user.service import get_user_by_id_telegram
-
 from . import models, schemas
 
 

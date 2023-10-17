@@ -1,6 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.operation.service import get_operations
+
 from . import models, schemas
 
 
@@ -65,6 +67,23 @@ async def create_category_user(
     session.add(new_category_user)
     await session.commit()
     return new_category_user
+
+
+def calc_difference_user_operations(operations):
+    total_balance = monthly_income = monthly_expenses = 0
+
+    return total_balance, monthly_income, monthly_expenses
+
+
+async def get_overview_data_user(session: AsyncSession, user_id: int):
+    user_operations = await get_operations(session, user_id)
+    total_balance, monthly_income, monthly_expenses = calc_difference_user_operations(
+        user_operations
+    )
+    # categories_user = await session.execute(
+    #     select(models.CategoryUser).where(models.CategoryUser.user_id == user_id)
+    # )
+    return total_balance, monthly_income, monthly_expenses
 
 
 # def get_user_by_email(db: Session, email: str):
