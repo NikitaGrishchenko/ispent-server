@@ -85,7 +85,7 @@ def calc_difference_user_operations(operations):
         if operation.kind == 1:
             total_income += operation.amount
         else:
-            total_expenses -= operation.amount
+            total_expenses += operation.amount
     return total_income, total_expenses
 
 

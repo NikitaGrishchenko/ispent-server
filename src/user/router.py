@@ -81,12 +81,12 @@ async def read_overview_user(
 ):
     (
         total_balance,
-        monthly_income,
-        monthly_expenses,
+        total_income,
+        total_expenses,
     ) = await service.get_overview_data_user(session, user.id)
 
     return {
         "total_balance": total_balance,
-        "monthly_income": monthly_income,
-        "monthly_expenses": monthly_expenses,
+        "total_income": total_income,
+        "total_expenses": total_expenses,
     }
