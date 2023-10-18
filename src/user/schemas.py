@@ -75,8 +75,8 @@ class UserUpdate(schemas.BaseUserUpdate):
 
 class OverviewUser(BaseModel):
     total_balance: float
-    monthly_income: float
-    monthly_expenses: float
+    total_income: float
+    total_expenses: float
     # last_operations: list[Operation]
 
     class Config:
