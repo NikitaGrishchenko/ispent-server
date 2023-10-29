@@ -2,13 +2,13 @@ from datetime import datetime
 from typing import List
 
 from fastapi_users import schemas
-from pydantic import BaseModel
 
 from src.operation.enum import KindOperationEnum
 from src.operation.schemas import Operation
+from src.schemas import BaseSchema
 
 
-class User(BaseModel):
+class User(BaseSchema):
     id: int
     id_telegram: int
     username: str | None = None
@@ -27,7 +27,7 @@ class User(BaseModel):
         from_attributes = True
 
 
-class CategoryUser(BaseModel):
+class CategoryUser(BaseSchema):
     id: int
     user_id: int
     name: str
@@ -73,7 +73,7 @@ class UserUpdate(schemas.BaseUserUpdate):
     pass
 
 
-class OverviewUser(BaseModel):
+class OverviewUser(BaseSchema):
     total_balance: float
     total_income: float
     total_expenses: float

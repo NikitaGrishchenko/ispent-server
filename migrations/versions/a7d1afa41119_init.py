@@ -1,8 +1,8 @@
-"""Initial models
+"""init
 
-Revision ID: acb2fddf50a6
+Revision ID: a7d1afa41119
 Revises: 
-Create Date: 2023-10-06 16:10:42.053450
+Create Date: 2023-10-29 13:19:40.743071
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'acb2fddf50a6'
+revision: str = 'a7d1afa41119'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -23,6 +23,7 @@ def upgrade() -> None:
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('id_telegram', sa.Integer(), nullable=False),
+    sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('username', sa.String(length=255), nullable=True),
     sa.Column('first_name', sa.String(length=255), nullable=True),
     sa.Column('last_name', sa.String(length=255), nullable=True),
@@ -34,6 +35,7 @@ def upgrade() -> None:
     sa.Column('is_superuser', sa.Boolean(), nullable=False),
     sa.Column('is_verified', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email'),
     sa.UniqueConstraint('id_telegram')
     )
     op.create_index(op.f('ix_user_id'), 'user', ['id'], unique=False)

@@ -9,7 +9,7 @@ from src.user.models import User
 from src.user.router import router as user_router
 from src.user.schemas import UserCreate, UserRead, UserUpdate
 
-app = FastAPI(title="ispent")
+app = FastAPI(title="ispent", docs_url="/api")
 
 origins = [
     "http://localhost",

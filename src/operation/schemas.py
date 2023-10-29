@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from src.schemas import BaseSchema
 
 from .enum import KindOperationEnum
 
 
-class Operation(BaseModel):
+class Operation(BaseSchema):
     id: int
     user_id: int
     category_user_id: int
