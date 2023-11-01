@@ -16,6 +16,7 @@ async def create_operation(session: AsyncSession, operation: schemas.Operation):
         category_user_id=operation.category_user_id,
         kind=operation.kind,
         amount=operation.amount,
+        comment=operation.comment,
     )
     session.add(new_operation)
     await session.commit()

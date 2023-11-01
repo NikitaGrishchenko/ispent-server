@@ -16,5 +16,6 @@ class Operation(Base):
         Integer, ForeignKey("category_user.id", ondelete="CASCADE"), nullable=False
     )
     kind = Column(Enum(KindOperationEnum), nullable=False)
+    comment = Column(String(255), nullable=False)
     amount = Column(Float, nullable=False)
     date = Column(DateTime, default=datetime.now)

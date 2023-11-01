@@ -12,6 +12,7 @@ class Operation(BaseSchema):
     kind: KindOperationEnum
     amount: float
     date: datetime
+    comment: str | None = None
 
     class Config:
         from_attributes = True
