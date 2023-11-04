@@ -1,6 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.operation.enum import KindOperationEnum
 from src.operation.service import get_operations
 
 from . import models, schemas
@@ -72,7 +73,8 @@ async def create_category_user(
 def calc_total_user_operations(operations):
     result = 0
     for operation in operations:
-        if operation.kind == 1:
+        print(operation.kind)
+        if operation.kind == KindOperationEnum(1):
             result += operation.amount
         else:
             result -= operation.amount
@@ -82,7 +84,7 @@ def calc_total_user_operations(operations):
 def calc_difference_user_operations(operations):
     total_income = total_expenses = 0
     for operation in operations:
-        if operation.kind == 1:
+        if operation.kind == KindOperationEnum(1):
             total_income += operation.amount
         else:
             total_expenses += operation.amount
@@ -96,6 +98,7 @@ async def get_overview_data_user(session: AsyncSession, user_id: int):
     # categories_user = await session.execute(
     #     select(models.CategoryUser).where(models.CategoryUser.user_id == user_id)
     # )
+
     return total_balance, total_income, total_expenses
 
 

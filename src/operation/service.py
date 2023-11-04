@@ -10,6 +10,12 @@ async def get_operations(session: AsyncSession, user_id: int):
     return operations.scalars().all()
 
 
+async def get_last_operations(session: AsyncSession, user_id: int, count: int):
+    stmt = select(models.Operation).where(models.Operation.user_id == user_id)
+    operations = await session.execute(stmt)
+    return operations.scalars().all()
+
+
 async def create_operation(session: AsyncSession, operation: schemas.Operation):
     new_operation = models.Operation(
         user_id=operation.user_id,

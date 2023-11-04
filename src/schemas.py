@@ -6,3 +6,7 @@ class BaseSchema(BaseModel):
     class Config:
         alias_generator = camelize
         populate_by_name = True
+
+
+class SchemaResponce(BaseSchema):
+    id: int

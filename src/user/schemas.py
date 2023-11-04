@@ -77,7 +77,7 @@ class OverviewUser(BaseSchema):
     total_balance: float
     total_income: float
     total_expenses: float
-    # last_operations: list[Operation]
+    last_operations: list[Operation]
 
     class Config:
         from_attributes = True

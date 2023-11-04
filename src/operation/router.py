@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("/list/", response_model=list[schemas.Operation])
+@router.get("/list/", response_model=list[schemas.OperationResponce])
 async def read_operations(
     user: User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),

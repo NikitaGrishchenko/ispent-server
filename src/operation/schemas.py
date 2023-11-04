@@ -1,12 +1,11 @@
 from datetime import datetime
 
-from src.schemas import BaseSchema
+from src.schemas import BaseSchema, SchemaResponce
 
 from .enum import KindOperationEnum
 
 
 class Operation(BaseSchema):
-    id: int
     user_id: int
     category_user_id: int
     kind: KindOperationEnum
@@ -16,3 +15,7 @@ class Operation(BaseSchema):
 
     class Config:
         from_attributes = True
+
+
+class OperationResponce(Operation, SchemaResponce):
+    pass
