@@ -1,6 +1,5 @@
-from .models import CategoryUser, User
+from .models import User
 
 __all__ = [
     "User",
-    "CategoryUser",
 ]

@@ -11,8 +11,8 @@ from src.config import (
     DOCKER_DB_USER,
 )
 from src.database import Base
-from src.operation.models import KindOperationEnum, Operation
-from src.user.models import CategoryUser, User
+from src.operation.models import CategoryUser, KindOperationEnum, Operation
+from src.user.models import User
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

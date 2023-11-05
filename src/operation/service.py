@@ -11,7 +11,12 @@ async def get_operations(session: AsyncSession, user_id: int):
 
 
 async def get_last_operations(session: AsyncSession, user_id: int, count: int):
-    stmt = select(models.Operation).where(models.Operation.user_id == user_id)
+    stmt = (
+        select(models.Operation)
+        .where(models.Operation.user_id == user_id)
+        .order_by(models.Operation.id.desc())
+        .limit(count)
+    )
     operations = await session.execute(stmt)
     return operations.scalars().all()
 
@@ -27,3 +32,34 @@ async def create_operation(session: AsyncSession, operation: schemas.Operation):
     session.add(new_operation)
     await session.commit()
     return new_operation
+
+
+async def get_category_user(session: AsyncSession, category_user: schemas.CategoryUser):
+    stmt = (
+        select(models.CategoryUser)
+        .where(models.CategoryUser.user_id == category_user.user_id)
+        .where(models.CategoryUser.name == category_user.name)
+        .where(models.CategoryUser.kind == category_user.kind)
+    )
+    category_user = await session.execute(stmt)
+    return category_user.scalar()
+
+
+async def create_category_user(
+    session: AsyncSession, category_user: schemas.CategoryUser
+):
+    new_category_user = models.CategoryUser(
+        user_id=category_user.user_id,
+        name=category_user.name,
+        kind=category_user.kind,
+    )
+    session.add(new_category_user)
+    await session.commit()
+    return new_category_user
+
+
+async def get_categories_user(session: AsyncSession, user_id: int):
+    categories_user = await session.execute(
+        select(models.CategoryUser).where(models.CategoryUser.user_id == user_id)
+    )
+    return categories_user.scalars().all()

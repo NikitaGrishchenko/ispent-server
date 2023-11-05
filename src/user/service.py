@@ -34,46 +34,14 @@ async def get_user_by_id_telegram(session: AsyncSession, id_telegram: int):
 #     return new_user
 
 
-async def get_categories_user(session: AsyncSession, user_id: int):
-    categories_user = await session.execute(
-        select(models.CategoryUser).where(models.CategoryUser.user_id == user_id)
-    )
-    return categories_user.scalars().all()
-
-
 async def get_users(session: AsyncSession):
     db_users = await session.execute(select(models.User))
     return db_users.scalars().all()
 
 
-async def get_category_user(session: AsyncSession, category_user: schemas.CategoryUser):
-    stmt = (
-        select(models.CategoryUser)
-        .where(models.CategoryUser.user_id == category_user.user_id)
-        .where(models.CategoryUser.name == category_user.name)
-        .where(models.CategoryUser.kind == category_user.kind)
-    )
-    category_user = await session.execute(stmt)
-    return category_user.scalar()
-
-
-async def create_category_user(
-    session: AsyncSession, category_user: schemas.CategoryUser
-):
-    new_category_user = models.CategoryUser(
-        user_id=category_user.user_id,
-        name=category_user.name,
-        kind=category_user.kind,
-    )
-    session.add(new_category_user)
-    await session.commit()
-    return new_category_user
-
-
 def calc_total_user_operations(operations):
     result = 0
     for operation in operations:
-        print(operation.kind)
         if operation.kind == KindOperationEnum(1):
             result += operation.amount
         else:

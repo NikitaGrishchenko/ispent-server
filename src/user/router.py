@@ -51,30 +51,6 @@ async def read_user_by_id_telegram(
     )
 
 
-@router.get("/categories/", response_model=list[schemas.CategoryUser])
-async def read_categories_user(
-    user: schemas.User = Depends(current_active_user),
-    session: AsyncSession = Depends(get_async_session),
-):
-    categories_user = await service.get_categories_user(session, user.id)
-    return categories_user
-
-
-@router.post("/category/create/", response_model=schemas.CategoryUser)
-async def create_category_user(
-    category_user: schemas.CategoryUser,
-    session: AsyncSession = Depends(get_async_session),
-    user: schemas.User = Depends(current_active_user),
-):
-    db_category_user = await service.get_category_user(session, category_user)
-    if db_category_user:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="User category already exists",
-        )
-    return await service.create_category_user(session, category_user)
-
-
 @router.get("/overview/", response_model=schemas.OverviewUser)
 async def read_overview_user(
     user: schemas.User = Depends(current_active_user),
@@ -85,7 +61,7 @@ async def read_overview_user(
         total_income,
         total_expenses,
     ) = await service.get_overview_data_user(session, user.id)
-    last_operations = await get_last_operations(session, user.id, 100)
+    last_operations = await get_last_operations(session, user.id, 10)
 
     return {
         "total_balance": total_balance,

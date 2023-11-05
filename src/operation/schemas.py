@@ -1,8 +1,19 @@
 from datetime import datetime
+from typing import List, Union
 
 from src.schemas import BaseSchema, SchemaResponce
 
 from .enum import KindOperationEnum
+
+
+class CategoryUser(BaseSchema):
+    id: int
+    user_id: int
+    name: str
+    kind: KindOperationEnum
+
+    class Config:
+        from_attributes = True
 
 
 class Operation(BaseSchema):
@@ -18,4 +29,4 @@ class Operation(BaseSchema):
 
 
 class OperationResponce(Operation, SchemaResponce):
-    pass
+    category_user: CategoryUser

@@ -4,7 +4,7 @@ from typing import List
 from fastapi_users import schemas
 
 from src.operation.enum import KindOperationEnum
-from src.operation.schemas import Operation
+from src.operation.schemas import Operation, OperationResponce
 from src.schemas import BaseSchema
 
 
@@ -22,16 +22,6 @@ class User(BaseSchema):
     is_active: bool
     is_superuser: bool
     is_verified: bool
-
-    class Config:
-        from_attributes = True
-
-
-class CategoryUser(BaseSchema):
-    id: int
-    user_id: int
-    name: str
-    kind: KindOperationEnum
 
     class Config:
         from_attributes = True
@@ -77,7 +67,7 @@ class OverviewUser(BaseSchema):
     total_balance: float
     total_income: float
     total_expenses: float
-    last_operations: list[Operation]
+    last_operations: list[OperationResponce]
 
     class Config:
         from_attributes = True
