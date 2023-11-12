@@ -30,6 +30,15 @@ async def create_operation(
     return await service.create_operation(session, operation)
 
 
+@router.delete("/delete/{id_operation}")
+async def delete_operation(
+    id_operation: int,
+    user: User = Depends(current_active_user),
+    session: AsyncSession = Depends(get_async_session),
+):
+    return await service.delete_operation(session, user.id, id_operation)
+
+
 @router.get("/categories/", response_model=list[schemas.CategoryUser])
 async def read_categories_user(
     user: User = Depends(current_active_user),

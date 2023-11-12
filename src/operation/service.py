@@ -1,4 +1,5 @@
-from sqlalchemy import select
+from fastapi import HTTPException
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import models, schemas
@@ -19,6 +20,21 @@ async def get_last_operations(session: AsyncSession, user_id: int, count: int):
     )
     operations = await session.execute(stmt)
     return operations.scalars().all()
+
+
+async def delete_operation(session: AsyncSession, active_user_id, id_operation: int):
+    stmt = select(models.Operation).where(models.Operation.id == id_operation)
+    operation = await session.execute(stmt)
+    operation = operation.scalar()
+
+    if operation and operation.user_id == active_user_id:
+        stmt = delete(models.Operation).where(models.Operation.id == id_operation)
+        await session.execute(stmt)
+        await session.commit()
+    else:
+        raise HTTPException(
+            status_code=404, detail=f"Операция с id {active_user_id} не найдена"
+        )
 
 
 async def create_operation(session: AsyncSession, operation: schemas.Operation):
