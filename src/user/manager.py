@@ -8,6 +8,8 @@ from src.config import SECRET
 from src.database import get_user_db
 from src.user.models import User
 
+from .schemas import UserCreate
+
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     reset_password_token_secret = SECRET
@@ -28,7 +30,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
     async def create(
         self,
-        user_create: schemas.UC,
+        user_create: UserCreate,
         safe: bool = False,
         request: Optional[Request] = None,
     ) -> models.UP:
@@ -43,6 +45,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             if safe
             else user_create.create_update_dict_superuser()
         )
+        print(user_dict)
         password = user_dict.pop("password")
         user_dict["hashed_password"] = self.password_helper.hash(password)
 

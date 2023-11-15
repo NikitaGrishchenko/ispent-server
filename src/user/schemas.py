@@ -44,19 +44,11 @@ class UserRead(schemas.BaseUser[int]):
 
 
 class UserCreate(schemas.BaseUserCreate):
-    id: int
-    id_telegram: int
     username: str | None = None
-    email: str | None = None
+    email: str
     first_name: str | None = None
     last_name: str | None = None
-    language_code: str | None = None
-    is_bot: bool | None = None
-    created_at: datetime
     password: str
-    is_active: bool
-    is_superuser: bool
-    is_verified: bool
 
 
 class UserUpdate(schemas.BaseUserUpdate):
