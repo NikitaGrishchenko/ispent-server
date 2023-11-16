@@ -1,6 +1,9 @@
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.config import DEFAULT_USER_OPERATION
+from src.database import get_async_session
 
 from . import models, schemas
 
@@ -79,3 +82,15 @@ async def get_categories_user(session: AsyncSession, user_id: int):
         select(models.CategoryUser).where(models.CategoryUser.user_id == user_id)
     )
     return categories_user.scalars().all()
+
+
+async def create_default_categories_user(session: AsyncSession, id_user: int):
+    for operation in DEFAULT_USER_OPERATION:
+        new_category_user = models.CategoryUser(
+            user_id=id_user,
+            name=operation["name"],
+            kind=operation["kind"],
+        )
+        session.add(new_category_user)
+
+        await session.commit()

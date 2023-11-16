@@ -5,7 +5,8 @@ from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, s
 from fastapi_users.db import SQLAlchemyUserDatabase
 
 from src.config import SECRET
-from src.database import get_user_db
+from src.database import get_async_session, get_user_db
+from src.operation.service import create_category_user, create_default_categories_user
 from src.user.models import User
 
 from .schemas import UserCreate
@@ -16,7 +17,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     verification_token_secret = SECRET
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
-        print(f"User {user.id} has registered.")
+        await create_default_categories_user(user.id)
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Optional[Request] = None
@@ -45,7 +46,6 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             if safe
             else user_create.create_update_dict_superuser()
         )
-        print(user_dict)
         password = user_dict.pop("password")
         user_dict["hashed_password"] = self.password_helper.hash(password)
 

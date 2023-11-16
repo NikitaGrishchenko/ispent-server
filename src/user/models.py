@@ -20,7 +20,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, index=True)
-    id_telegram = Column(Integer, unique=True, nullable=False)
+    id_telegram = Column(Integer, unique=True)
     email = Column(String(255), unique=True, nullable=False)
     username = Column(String(255))
     first_name = Column(String(255))

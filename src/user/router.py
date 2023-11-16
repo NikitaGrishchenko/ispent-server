@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("/list/", response_model=list[schemas.User])
+@router.get("/list/", response_model=list[schemas.UserRead])
 async def read_users(
     user: schemas.User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),
@@ -21,7 +21,7 @@ async def read_users(
     return db_users
 
 
-@router.get("/{id_user}", response_model=schemas.User)
+@router.get("/{id_user}", response_model=schemas.UserRead)
 async def read_user_by_id(
     id_user: int,
     user: schemas.User = Depends(current_active_user),
@@ -36,7 +36,7 @@ async def read_user_by_id(
     )
 
 
-@router.get("/id-telegram/{id_telegram}", response_model=schemas.User)
+@router.get("/id-telegram/{id_telegram}", response_model=schemas.UserRead)
 async def read_user_by_id_telegram(
     id_telegram: int,
     user: schemas.User = Depends(current_active_user),
