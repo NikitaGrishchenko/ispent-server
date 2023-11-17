@@ -19,27 +19,27 @@ DOCKER_DB_PORT = str(os.getenv("DOCKER_DB_PORT"))
 
 DEFAULT_USER_OPERATION = [
     {
-        "kind": 0,
+        "kind": "EXPENSE",
         "name": "Продукты",
     },
     {
-        "kind": 0,
+        "kind": "EXPENSE",
         "name": "Развлечения",
     },
     {
-        "kind": 0,
+        "kind": "EXPENSE",
         "name": "Прочее",
     },
     {
-        "kind": 1,
+        "kind": "INCOME",
         "name": "Зарплата",
     },
     {
-        "kind": 1,
+        "kind": "INCOME",
         "name": "Пассивный доход",
     },
     {
-        "kind": 1,
+        "kind": "INCOME",
         "name": "Прочее",
     },
 ]
