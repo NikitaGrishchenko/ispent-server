@@ -57,6 +57,25 @@ async def create_operation(session: AsyncSession, operation: schemas.Operation):
     return new_operation
 
 
+async def update_operation(session: AsyncSession, operation: schemas.Operation):
+    # stored_item_data = items[item_id]
+    # stored_item_model = Item(**stored_item_data)
+    # update_data = item.dict(exclude_unset=True)
+    # updated_item = stored_item_model.copy(update=update_data)
+    # items[item_id] = jsonable_encoder(updated_item)
+
+    new_operation = models.Operation(
+        user_id=operation.user_id,
+        category_user_id=operation.category_user_id,
+        kind=operation.kind,
+        amount=operation.amount,
+        comment=operation.comment,
+    )
+    session.add(new_operation)
+    await session.commit()
+    return new_operation
+
+
 async def get_category_user(session: AsyncSession, category_user: schemas.CategoryUser):
     stmt = (
         select(models.CategoryUser)

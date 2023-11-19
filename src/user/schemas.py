@@ -4,7 +4,7 @@ from typing import List
 from fastapi_users import schemas
 
 from src.operation.enum import KindOperationEnum
-from src.operation.schemas import Operation, OperationResponce
+from src.operation.schemas import Operation, OperationRead
 from src.schemas import BaseSchema
 
 
@@ -57,7 +57,7 @@ class OverviewUser(BaseSchema):
     total_balance: float
     total_income: float
     total_expenses: float
-    last_operations: list[OperationResponce]
+    last_operations: list[OperationRead]
 
     class Config:
         from_attributes = True

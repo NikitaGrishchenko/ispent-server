@@ -17,7 +17,6 @@ class CategoryUser(BaseSchema):
 
 
 class Operation(BaseSchema):
-    user_id: int
     category_user_id: int
     kind: KindOperationEnum
     amount: float
@@ -28,5 +27,10 @@ class Operation(BaseSchema):
         from_attributes = True
 
 
-class OperationResponce(Operation, SchemaResponce):
+class OperationUpdate(Operation, SchemaResponce):
     category_user: CategoryUser
+
+
+class OperationRead(Operation, SchemaResponce):
+    category_user: CategoryUser
+    user_id: int

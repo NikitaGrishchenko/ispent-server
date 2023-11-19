@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get("/list/", response_model=list[schemas.OperationResponce])
+@router.get("/list/", response_model=list[schemas.OperationRead])
 async def read_operations(
     user: User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),
@@ -28,6 +28,15 @@ async def create_operation(
     session: AsyncSession = Depends(get_async_session),
 ):
     return await service.create_operation(session, operation)
+
+
+@router.patch("/update/", response_model=schemas.Operation)
+async def update_operation(
+    operation: schemas.Operation,
+    user: User = Depends(current_active_user),
+    session: AsyncSession = Depends(get_async_session),
+):
+    return await service.update_operation(session, operation)
 
 
 @router.delete("/delete/{id_operation}")
