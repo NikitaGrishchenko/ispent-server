@@ -21,22 +21,22 @@ async def read_operations(
     return operations
 
 
-@router.post("/create/", response_model=schemas.Operation)
+@router.post("/create/", response_model=schemas.OperationCreate)
 async def create_operation(
-    operation: schemas.Operation,
+    operation: schemas.OperationCreate,
     user: User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),
 ):
     return await service.create_operation(session, operation)
 
 
-@router.patch("/update/", response_model=schemas.Operation)
+@router.put("/update/", response_model=schemas.OperationUpdate)
 async def update_operation(
-    operation: schemas.Operation,
+    operation: schemas.OperationUpdate,
     user: User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),
 ):
-    return await service.update_operation(session, operation)
+    return await service.update_operation(session, operation, user.id)
 
 
 @router.delete("/delete/{id_operation}")

@@ -16,21 +16,25 @@ class CategoryUser(BaseSchema):
         from_attributes = True
 
 
-class Operation(BaseSchema):
+class OperationBase(BaseSchema):
     category_user_id: int
     kind: KindOperationEnum
     amount: float
-    date: datetime
     comment: str | None = None
+    user_id: int
 
     class Config:
         from_attributes = True
 
 
-class OperationUpdate(Operation, SchemaResponce):
-    category_user: CategoryUser
+class OperationCreate(OperationBase):
+    pass
 
 
-class OperationRead(Operation, SchemaResponce):
+class OperationUpdate(OperationBase, SchemaResponce):
+    pass
+
+
+class OperationRead(OperationBase, SchemaResponce):
     category_user: CategoryUser
-    user_id: int
+    date: datetime

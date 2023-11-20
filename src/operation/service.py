@@ -18,6 +18,10 @@ async def get_operations(session: AsyncSession, user_id: int):
     return operations.scalars().all()
 
 
+async def get_operation(session: AsyncSession, operation_id: int):
+    return await session.get(models.Operation, operation_id)
+
+
 async def get_last_operations(session: AsyncSession, user_id: int, count: int):
     stmt = (
         select(models.Operation)
@@ -40,11 +44,11 @@ async def delete_operation(session: AsyncSession, active_user_id, id_operation: 
         await session.commit()
     else:
         raise HTTPException(
-            status_code=404, detail=f"Операция с id {active_user_id} не найдена"
+            status_code=404, detail=f"Operation with id {active_user_id} not found"
         )
 
 
-async def create_operation(session: AsyncSession, operation: schemas.Operation):
+async def create_operation(session: AsyncSession, operation: schemas.OperationCreate):
     new_operation = models.Operation(
         user_id=operation.user_id,
         category_user_id=operation.category_user_id,
@@ -57,23 +61,22 @@ async def create_operation(session: AsyncSession, operation: schemas.Operation):
     return new_operation
 
 
-async def update_operation(session: AsyncSession, operation: schemas.Operation):
-    # stored_item_data = items[item_id]
-    # stored_item_model = Item(**stored_item_data)
-    # update_data = item.dict(exclude_unset=True)
-    # updated_item = stored_item_model.copy(update=update_data)
-    # items[item_id] = jsonable_encoder(updated_item)
-
-    new_operation = models.Operation(
-        user_id=operation.user_id,
-        category_user_id=operation.category_user_id,
-        kind=operation.kind,
-        amount=operation.amount,
-        comment=operation.comment,
-    )
-    session.add(new_operation)
-    await session.commit()
-    return new_operation
+async def update_operation(
+    session: AsyncSession,
+    updated_data: schemas.OperationUpdate,
+    current_user_id: int,
+):
+    stored_operation = await get_operation(session, updated_data.id)
+    if stored_operation and updated_data.user_id == current_user_id:
+        for key, value in updated_data.dict().items():
+            setattr(stored_operation, key, value)
+        await session.commit()
+    else:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Operation with id {updated_data.id} not found",
+        )
+    return updated_data
 
 
 async def get_category_user(session: AsyncSession, category_user: schemas.CategoryUser):

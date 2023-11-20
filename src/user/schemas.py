@@ -4,7 +4,7 @@ from typing import List
 from fastapi_users import schemas
 
 from src.operation.enum import KindOperationEnum
-from src.operation.schemas import Operation, OperationRead
+from src.operation.schemas import OperationRead
 from src.schemas import BaseSchema
 
 
