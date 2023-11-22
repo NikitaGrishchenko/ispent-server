@@ -10,6 +10,8 @@ class CategoryUser(BaseSchema):
     id: int
     user_id: int
     name: str
+    color: str
+    icon: str
     kind: KindOperationEnum
 
     class Config:

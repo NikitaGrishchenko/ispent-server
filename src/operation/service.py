@@ -117,6 +117,8 @@ async def create_default_categories_user(id_user: int):
                 user_id=id_user,
                 name=operation["name"],
                 kind=operation["kind"],
+                color=operation["color"],
+                icon=operation["icon"],
             )
             session.add(new_category_user)
 

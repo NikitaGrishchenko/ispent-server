@@ -21,25 +21,43 @@ DEFAULT_USER_OPERATION = [
     {
         "kind": "EXPENSE",
         "name": "Продукты",
+        "icon": "shopping_basket",
+        "color": "#109715",
     },
     {
         "kind": "EXPENSE",
         "name": "Развлечения",
+        "icon": "nightlife",
+        "color": "#6C1097",
     },
     {
         "kind": "EXPENSE",
-        "name": "Прочее",
+        "name": "Обед",
+        "icon": "restaurant",
+        "color": "#E6EA1E",
+    },
+    {
+        "kind": "EXPENSE",
+        "name": "Прочий расход",
+        "icon": "radio_button_unchecked",
+        "color": "#1E87C2",
     },
     {
         "kind": "INCOME",
         "name": "Зарплата",
+        "icon": "payments",
+        "color": "#64EB81",
     },
     {
         "kind": "INCOME",
         "name": "Пассивный доход",
+        "icon": "account_balance_wallet",
+        "color": "#D3A223",
     },
     {
         "kind": "INCOME",
-        "name": "Прочее",
+        "name": "Прочий доход",
+        "icon": "radio_button_unchecked",
+        "color": "#CD2375",
     },
 ]

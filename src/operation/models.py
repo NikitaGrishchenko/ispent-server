@@ -42,3 +42,5 @@ class CategoryUser(Base):
     __table_args__ = (
         UniqueConstraint("user_id", "name", "kind", name="_unique_catagory_user"),
     )
+    color = Column(String(255), nullable=False)
+    icon = Column(String(255), nullable=False)
