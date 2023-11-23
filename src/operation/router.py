@@ -48,7 +48,7 @@ async def delete_operation(
     return await service.delete_operation(session, user.id, id_operation)
 
 
-@router.get("/categories/", response_model=list[schemas.CategoryUser])
+@router.get("/categories/", response_model=list[schemas.CategoryUserRead])
 async def read_categories_user(
     user: User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),
@@ -57,9 +57,9 @@ async def read_categories_user(
     return categories_user
 
 
-@router.post("/category/create/", response_model=schemas.CategoryUser)
+@router.post("/category/create/", response_model=schemas.CategoryUserCreate)
 async def create_category_user(
-    category_user: schemas.CategoryUser,
+    category_user: schemas.CategoryUserCreate,
     session: AsyncSession = Depends(get_async_session),
     user: User = Depends(current_active_user),
 ):

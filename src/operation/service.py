@@ -79,7 +79,9 @@ async def update_operation(
     return updated_data
 
 
-async def get_category_user(session: AsyncSession, category_user: schemas.CategoryUser):
+async def get_category_user(
+    session: AsyncSession, category_user: schemas.CategoryUserRead
+):
     stmt = (
         select(models.CategoryUser)
         .where(models.CategoryUser.user_id == category_user.user_id)
@@ -91,12 +93,14 @@ async def get_category_user(session: AsyncSession, category_user: schemas.Catego
 
 
 async def create_category_user(
-    session: AsyncSession, category_user: schemas.CategoryUser
+    session: AsyncSession, category_user: schemas.CategoryUserCreate
 ):
     new_category_user = models.CategoryUser(
         user_id=category_user.user_id,
         name=category_user.name,
         kind=category_user.kind,
+        color=category_user.color,
+        icon=category_user.icon,
     )
     session.add(new_category_user)
     await session.commit()

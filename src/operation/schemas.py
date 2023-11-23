@@ -6,8 +6,7 @@ from src.schemas import BaseSchema, SchemaResponce
 from .enum import KindOperationEnum
 
 
-class CategoryUser(BaseSchema):
-    id: int
+class CategoryUserBase(BaseSchema):
     user_id: int
     name: str
     color: str
@@ -16,6 +15,14 @@ class CategoryUser(BaseSchema):
 
     class Config:
         from_attributes = True
+
+
+class CategoryUserCreate(CategoryUserBase):
+    pass
+
+
+class CategoryUserRead(CategoryUserBase, SchemaResponce):
+    pass
 
 
 class OperationBase(BaseSchema):
@@ -38,5 +45,5 @@ class OperationUpdate(OperationBase, SchemaResponce):
 
 
 class OperationRead(OperationBase, SchemaResponce):
-    category_user: CategoryUser
+    category_user: CategoryUserRead
     date: datetime
