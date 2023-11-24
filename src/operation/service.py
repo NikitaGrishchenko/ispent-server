@@ -1,7 +1,7 @@
 import contextlib
 
 from fastapi import Depends, HTTPException
-from sqlalchemy import delete, select
+from sqlalchemy import delete, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.config import DEFAULT_USER_OPERATION
@@ -109,7 +109,9 @@ async def create_category_user(
 
 async def get_categories_user(session: AsyncSession, user_id: int):
     categories_user = await session.execute(
-        select(models.CategoryUser).where(models.CategoryUser.user_id == user_id)
+        select(models.CategoryUser)
+        .where(models.CategoryUser.user_id == user_id)
+        .order_by(desc("id"))
     )
     return categories_user.scalars().all()
 
