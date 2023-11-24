@@ -57,7 +57,7 @@ async def read_categories_user(
     return categories_user
 
 
-@router.post("/category/create/", response_model=schemas.CategoryUserCreate)
+@router.post("/category/create/", response_model=schemas.CategoryUserRead)
 async def create_category_user(
     category_user: schemas.CategoryUserCreate,
     session: AsyncSession = Depends(get_async_session),
@@ -67,6 +67,6 @@ async def create_category_user(
     if db_category_user:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="User category already exists",
+            detail="Category already exists",
         )
     return await service.create_category_user(session, category_user)
