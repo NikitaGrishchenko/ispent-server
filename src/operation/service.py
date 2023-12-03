@@ -1,7 +1,7 @@
 import contextlib
 
 from fastapi import Depends, HTTPException
-from sqlalchemy import delete, desc, select
+from sqlalchemy import delete, desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.config import DEFAULT_USER_OPERATION
@@ -79,7 +79,7 @@ async def update_operation(
     return updated_data
 
 
-async def get_category_user(
+async def checking_uniqueness_category_user(
     session: AsyncSession, category_user: schemas.CategoryUserRead
 ):
     stmt = (
@@ -88,6 +88,12 @@ async def get_category_user(
         .where(models.CategoryUser.name == category_user.name)
         .where(models.CategoryUser.kind == category_user.kind)
     )
+    category_user = await session.execute(stmt)
+    return category_user.scalar()
+
+
+async def get_category_user(session: AsyncSession, category_user_id: int):
+    stmt = select(models.CategoryUser).where(models.CategoryUser.id == category_user_id)
     category_user = await session.execute(stmt)
     return category_user.scalar()
 
@@ -129,3 +135,51 @@ async def create_default_categories_user(id_user: int):
             session.add(new_category_user)
 
         await session.commit()
+
+
+async def delete_category_user(session: AsyncSession, active_user_id, id_category: int):
+    stmt = select(models.CategoryUser).where(models.CategoryUser.id == id_category)
+    category_user = await session.execute(stmt)
+    category_user = category_user.scalar()
+
+    # pylint: disable=E1102
+    stmt = (
+        select(func.count(models.Operation.id))
+        .select_from(models.Operation)
+        .where(models.Operation.category_user_id == category_user.id)
+    )
+    operations_related_category = await session.execute(stmt)
+
+    if operations_related_category.scalar_one() > 0:
+        raise HTTPException(
+            status_code=500, detail="You cannot delete a category because it has links"
+        )
+
+    if category_user and category_user.user_id == active_user_id:
+        stmt = delete(models.CategoryUser).where(models.CategoryUser.id == id_category)
+        await session.execute(stmt)
+        await session.commit()
+        return category_user
+
+    raise HTTPException(
+        status_code=404, detail=f"Category user with id {active_user_id} not found"
+    )
+
+
+async def update_category_user(
+    session: AsyncSession,
+    updated_data: schemas.CategoryUserUpdate,
+    current_user_id: int,
+):
+    stored_category_user = await get_category_user(session, updated_data.id)
+    print(stored_category_user, updated_data.user_id, current_user_id)
+    if stored_category_user and updated_data.user_id == current_user_id:
+        for key, value in updated_data.dict().items():
+            setattr(stored_category_user, key, value)
+        await session.commit()
+    else:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Category user with id {updated_data.id} not found",
+        )
+    return updated_data

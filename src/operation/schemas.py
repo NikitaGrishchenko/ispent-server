@@ -25,6 +25,10 @@ class CategoryUserRead(CategoryUserBase, SchemaResponce):
     pass
 
 
+class CategoryUserUpdate(CategoryUserBase, SchemaResponce):
+    pass
+
+
 class OperationBase(BaseSchema):
     category_user_id: int
     kind: KindOperationEnum
