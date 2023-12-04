@@ -29,7 +29,7 @@ class Operation(Base):
     kind = Column(Enum(KindOperationEnum), nullable=False)
     comment = Column(String(255), nullable=False)
     amount = Column(Float, nullable=False)
-    date = Column(DateTime, default=datetime.now)
+    date = Column(DateTime(timezone=True), nullable=False)
 
 
 class CategoryUser(Base):

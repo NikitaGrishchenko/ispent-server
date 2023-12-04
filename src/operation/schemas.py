@@ -35,6 +35,7 @@ class OperationBase(BaseSchema):
     amount: float
     comment: str | None = None
     user_id: int
+    date: datetime
 
     class Config:
         from_attributes = True
@@ -50,4 +51,3 @@ class OperationUpdate(OperationBase, SchemaResponce):
 
 class OperationRead(OperationBase, SchemaResponce):
     category_user: CategoryUserRead
-    date: datetime

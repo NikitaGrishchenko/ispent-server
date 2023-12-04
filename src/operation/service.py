@@ -26,7 +26,7 @@ async def get_last_operations(session: AsyncSession, user_id: int, count: int):
     stmt = (
         select(models.Operation)
         .where(models.Operation.user_id == user_id)
-        .order_by(models.Operation.id.desc())
+        .order_by(models.Operation.date.desc())
         .limit(count)
     )
     operations = await session.execute(stmt)
@@ -55,6 +55,7 @@ async def create_operation(session: AsyncSession, operation: schemas.OperationCr
         kind=operation.kind,
         amount=operation.amount,
         comment=operation.comment,
+        date=operation.date,
     )
     session.add(new_operation)
     await session.commit()
