@@ -1,4 +1,5 @@
 import contextlib
+import datetime
 
 from fastapi import Depends, HTTPException
 from sqlalchemy import delete, desc, func, select
@@ -49,6 +50,9 @@ async def delete_operation(session: AsyncSession, active_user_id, id_operation: 
 
 
 async def create_operation(session: AsyncSession, operation: schemas.OperationCreate):
+    if operation.date.day > datetime.datetime.today().day:
+        raise HTTPException(status_code=500, detail="Incorrect date")
+
     new_operation = models.Operation(
         user_id=operation.user_id,
         category_user_id=operation.category_user_id,
