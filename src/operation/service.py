@@ -1,5 +1,7 @@
+import calendar
 import contextlib
 import datetime
+from pprint import pprint
 
 from fastapi import Depends, HTTPException
 from sqlalchemy import delete, desc, func, select
@@ -17,6 +19,75 @@ async def get_operations(session: AsyncSession, user_id: int):
     stmt = select(models.Operation).where(models.Operation.user_id == user_id)
     operations = await session.execute(stmt)
     return operations.scalars().all()
+
+
+def get_start_and_end_of_current_month():
+    today = datetime.datetime.today()
+
+    starting_date = today.replace(
+        day=1,
+        hour=0,
+        minute=0,
+        second=0,
+        microsecond=0,
+    )
+    end_date = today.replace(
+        day=calendar.monthrange(today.year, today.month)[1],
+        hour=23,
+        minute=59,
+        second=59,
+        microsecond=999999,
+    )
+    return starting_date, end_date
+
+
+def get_operations_by_day(date, operations):
+    return [operation for operation in operations if operation.date.date() == date]
+
+
+def sort_operation_by_days(operations):
+    from src.user.service import calc_total_user_operations
+
+    days = []
+    for operation in operations:
+        if operation.date not in days:
+            days.append(operation.date)
+
+    result = []
+    days.sort()
+
+    for index, day in enumerate(days):
+        operations_by_day = get_operations_by_day(day.date(), operations)
+        result.append(
+            {
+                "id": index,
+                "date": day.date(),
+                "operations": operations_by_day,
+                "total": calc_total_user_operations(operations_by_day),
+            }
+        )
+
+    return result
+
+
+async def get_operations_for_period_of_time(
+    session: AsyncSession,
+    user_id: int,
+    starting_date: str,
+    end_date: str,
+):
+    if starting_date is None and end_date is None:
+        starting_date, end_date = get_start_and_end_of_current_month()
+
+    stmt = (
+        select(models.Operation)
+        .where(models.Operation.user_id == user_id)
+        .where(models.Operation.date >= starting_date)
+        .where(models.Operation.date <= end_date)
+    )
+    operations_db = await session.execute(stmt)
+
+    return sort_operation_by_days(operations_db.scalars().all())
 
 
 async def get_operation(session: AsyncSession, operation_id: int):
@@ -50,7 +121,7 @@ async def delete_operation(session: AsyncSession, active_user_id, id_operation: 
 
 
 async def create_operation(session: AsyncSession, operation: schemas.OperationCreate):
-    if operation.date.day > datetime.datetime.today().day:
+    if operation.date.date() > datetime.datetime.utcnow().date():
         raise HTTPException(status_code=500, detail="Incorrect date")
 
     new_operation = models.Operation(

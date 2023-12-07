@@ -1,3 +1,5 @@
+import datetime
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,12 +14,16 @@ router = APIRouter(
 )
 
 
-@router.get("/list/", response_model=list[schemas.OperationRead])
+@router.get("/list/", response_model=list[schemas.OperationByPeriodRead])
 async def read_operations(
     user: User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),
+    starting_date: str | None = None,
+    end_date: str | None = None,
 ):
-    operations = await service.get_operations(session, user.id)
+    operations = await service.get_operations_for_period_of_time(
+        session, user.id, starting_date, end_date
+    )
     return operations
 
 
@@ -63,7 +69,9 @@ async def create_category_user(
     session: AsyncSession = Depends(get_async_session),
     user: User = Depends(current_active_user),
 ):
-    db_category_user = await service.checking_uniqueness_category_user(session, category_user)
+    db_category_user = await service.checking_uniqueness_category_user(
+        session, category_user
+    )
     if db_category_user:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

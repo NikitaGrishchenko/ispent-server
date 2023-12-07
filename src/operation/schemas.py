@@ -51,3 +51,10 @@ class OperationUpdate(OperationBase, SchemaResponce):
 
 class OperationRead(OperationBase, SchemaResponce):
     category_user: CategoryUserRead
+
+
+class OperationByPeriodRead(BaseSchema):
+    id: int
+    date: datetime
+    operations: List[OperationRead]
+    total: float
