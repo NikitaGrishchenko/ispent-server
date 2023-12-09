@@ -42,7 +42,10 @@ def get_start_and_end_of_current_month():
 
 
 def get_operations_by_day(date, operations):
-    return [operation for operation in operations if operation.date.date() == date]
+    operations = [
+        operation for operation in operations if operation.date.date() == date
+    ]
+    return sorted(operations, key=lambda x: x.id, reverse=True)
 
 
 def sort_operation_by_days(operations):
@@ -98,7 +101,7 @@ async def get_last_operations(session: AsyncSession, user_id: int, count: int):
     stmt = (
         select(models.Operation)
         .where(models.Operation.user_id == user_id)
-        .order_by(models.Operation.date.desc())
+        .order_by(models.Operation.id.desc())
         .limit(count)
     )
     operations = await session.execute(stmt)
@@ -114,10 +117,11 @@ async def delete_operation(session: AsyncSession, active_user_id, id_operation: 
         stmt = delete(models.Operation).where(models.Operation.id == id_operation)
         await session.execute(stmt)
         await session.commit()
-    else:
-        raise HTTPException(
-            status_code=404, detail=f"Operation with id {active_user_id} not found"
-        )
+        return operation
+
+    raise HTTPException(
+        status_code=404, detail=f"Operation with id {active_user_id} not found"
+    )
 
 
 async def create_operation(session: AsyncSession, operation: schemas.OperationCreate):

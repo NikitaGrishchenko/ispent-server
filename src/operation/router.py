@@ -45,7 +45,7 @@ async def update_operation(
     return await service.update_operation(session, operation, user.id)
 
 
-@router.delete("/delete/{id_operation}")
+@router.delete("/delete/{id_operation}", response_model=schemas.OperationRead)
 async def delete_operation(
     id_operation: int,
     user: User = Depends(current_active_user),
