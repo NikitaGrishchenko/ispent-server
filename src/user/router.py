@@ -60,6 +60,7 @@ async def read_overview_user(
         total_balance,
         total_income,
         total_expenses,
+        total_by_categories,
     ) = await service.get_overview_data_user(session, user.id)
     last_operations = await get_last_operations(session, user.id, 5)
 
@@ -68,4 +69,5 @@ async def read_overview_user(
         "total_income": total_income,
         "total_expenses": total_expenses,
         "last_operations": last_operations,
+        "total_by_categories": total_by_categories,
     }

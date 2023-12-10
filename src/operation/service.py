@@ -101,6 +101,7 @@ async def get_last_operations(session: AsyncSession, user_id: int, count: int):
     stmt = (
         select(models.Operation)
         .where(models.Operation.user_id == user_id)
+        .order_by(models.Operation.date.desc())
         .order_by(models.Operation.id.desc())
         .limit(count)
     )
@@ -252,7 +253,6 @@ async def update_category_user(
     current_user_id: int,
 ):
     stored_category_user = await get_category_user(session, updated_data.id)
-    print(stored_category_user, updated_data.user_id, current_user_id)
     if stored_category_user and updated_data.user_id == current_user_id:
         for key, value in updated_data.dict().items():
             setattr(stored_category_user, key, value)
