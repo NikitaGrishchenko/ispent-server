@@ -9,14 +9,9 @@ from src.user.models import User
 from src.user.router import router as user_router
 from src.user.schemas import UserCreate, UserRead, UserUpdate
 
-app = FastAPI(title="ispent", docs_url="/api")
+app = FastAPI(title="ispent")
 
-origins = [
-    "http://localhost",
-    "http://localhost:9000",
-    "http://127.0.0.1",
-    "http://127.0.0.1:9000",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,15 +22,15 @@ app.add_middleware(
 )
 
 
-app.include_router(user_router, prefix="/user", tags=["user"])
-app.include_router(operation_router, prefix="/operation", tags=["operation"])
+app.include_router(user_router, prefix="/api/user", tags=["user"])
+app.include_router(operation_router, prefix="/api/operation", tags=["operation"])
 
 app.include_router(
-    fastapi_users.get_auth_router(auth_backend), prefix="/auth", tags=["auth"]
+    fastapi_users.get_auth_router(auth_backend), prefix="/api/auth", tags=["auth"]
 )
 app.include_router(
     fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/auth",
+    prefix="/api/auth",
     tags=["auth"],
 )
 # app.include_router(
