@@ -1,10 +1,7 @@
 from datetime import datetime
-from typing import List
 
 from fastapi_users import schemas
 
-from src.operation.enum import KindOperationEnum
-from src.operation.schemas import CategoryUserRead, OperationRead
 from src.schemas import BaseSchema, SchemaResponce
 
 
@@ -51,19 +48,3 @@ class UserCreate(schemas.BaseUserCreate):
 
 class UserUpdate(schemas.BaseUserUpdate):
     pass
-
-
-class TotalByCategories(SchemaResponce):
-    category_user: CategoryUserRead
-    total: float
-
-
-class OverviewUser(BaseSchema):
-    total_balance: float
-    total_income: float
-    total_expenses: float
-    last_operations: list[OperationRead]
-    total_by_categories: list[TotalByCategories]
-
-    class Config:
-        from_attributes = True

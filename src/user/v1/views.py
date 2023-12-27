@@ -7,18 +7,14 @@ from src.operation.service import get_last_operations
 from . import schemas, services
 from .auth import current_active_user
 
-router = APIRouter(
-    responses={404: {"description": "Not found"}},
-)
 
-
-@router.get("/list/", response_model=list[schemas.UserRead])
-async def read_users(
-    user: schemas.User = Depends(current_active_user),
-    session: AsyncSession = Depends(get_async_session),
-):
-    db_users = await services.get_users(session)
-    return db_users
+# @router.get("/list/", response_model=list[schemas.UserRead])
+# async def read_users(
+#     user: schemas.User = Depends(current_active_user),
+#     session: AsyncSession = Depends(get_async_session),
+# ):
+#     db_users = await services.get_users(session)
+#     return db_users
 
 
 @router.get("/{id_user}", response_model=schemas.UserRead)
