@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from .views.read_users import router
+from .views import router
 
 user_v1_router = APIRouter()
 
