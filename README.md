@@ -1,6 +1,6 @@
 ispent-backend
 
-poetry run uvicorn src.main:app --reload
+poetry run uvicorn src.core:app --reload
 
 poetry run alembic init migrations
 poetry run alembic revision --autogenerate -m "init"

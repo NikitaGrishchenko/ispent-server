@@ -1,3 +1,3 @@
 .PHONY: run
 run:
-	poetry run uvicorn src.main:app --reload
+	poetry run uvicorn src.core:app --reload

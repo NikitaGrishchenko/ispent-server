@@ -15,7 +15,7 @@ services:
     image: ${DOCKER_BACKEND_IMAGE}
     command: sh -c "
       poetry run alembic upgrade head &&
-      poetry run uvicorn src.main:app --host 0.0.0.0 --port 8000"
+      poetry run uvicorn src.core:app --host 0.0.0.0 --port 8000"
     expose:
       - 8000
     volumes:

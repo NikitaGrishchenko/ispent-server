@@ -1,50 +1,27 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+# from fastapi import FastAPI
+# from fastapi.middleware.cors import CORSMiddleware
 
-from src.operation.router import router as operation_router
+# from src.operation.router import router as operation_router
 
-# from app.schemas import UserCreate, UserRead, UserUpdate
-from src.user.auth import auth_backend, current_active_user, fastapi_users
-from src.user.models import User
-from src.user.router import router as user_router
-from src.user.schemas import UserCreate, UserRead, UserUpdate
+# # from app.schemas import UserCreate, UserRead, UserUpdate
+# from src.user.auth import auth_backend, current_active_user, fastapi_users
+# from src.user.models import User
 
-app = FastAPI(title="ispent")
+# # from src.user.router import router as user_router
+# from src.user.schemas import UserCreate, UserRead, UserUpdate
 
-origins = ["*"]
+# app = FastAPI(title="ispent")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# origins = ["*"]
 
-
-app.include_router(user_router, prefix="/api/user", tags=["user"])
-app.include_router(operation_router, prefix="/api/operation", tags=["operation"])
-
-app.include_router(
-    fastapi_users.get_auth_router(auth_backend), prefix="/api/auth", tags=["auth"]
-)
-app.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/api/auth",
-    tags=["auth"],
-)
-# app.include_router(
-#     fastapi_users.get_reset_password_router(),
-#     prefix="/auth",
-#     tags=["auth"],
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
 # )
-# app.include_router(
-#     fastapi_users.get_verify_router(UserRead),
-#     prefix="/auth",
-#     tags=["auth"],
-# )
-# app.include_router(
-#     fastapi_users.get_users_router(UserRead, UserUpdate),
-#     prefix="/users",
-#     tags=["users"],
-# )
+
+
+# app.include_router(user_router, prefix="/api/user", tags=["user"])
+# app.include_router(operation_router, prefix="/api/operation", tags=["operation"])
