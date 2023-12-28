@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.operation.service import get_categories_user
+from src.operation.services import get_categories_user
 
 from .total_by_category import total_by_category
 

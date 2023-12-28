@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.operation.service import get_operations
+from src.operation.services import get_operations
 
 from .calc_difference_user_operations import calc_difference_user_operations
 from .calc_total_user_operations import calc_total_user_operations

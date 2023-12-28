@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database import get_async_session
-from src.operation.service import get_last_operations
+from src.operation.services import get_last_operations
 from src.user import schemas, services
 from src.user.auth import current_active_user
 
