@@ -1,32 +1,10 @@
 from datetime import datetime
-from typing import List, Union
+from typing import List
 
 from src.schemas import BaseSchema, SchemaResponce
 
-from .enum import KindOperationEnum
-
-
-class CategoryUserBase(BaseSchema):
-    user_id: int
-    name: str
-    color: str
-    icon: str
-    kind: KindOperationEnum
-
-    class Config:
-        from_attributes = True
-
-
-class CategoryUserCreate(CategoryUserBase):
-    pass
-
-
-class CategoryUserRead(CategoryUserBase, SchemaResponce):
-    pass
-
-
-class CategoryUserUpdate(CategoryUserBase, SchemaResponce):
-    pass
+from ..enum import KindOperationEnum
+from .category import CategoryUserRead
 
 
 class OperationBase(BaseSchema):
