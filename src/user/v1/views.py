@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.database import get_async_session
+from src.core.database import get_async_session
 from src.operation.services import get_last_operations
 from src.user import schemas, services
 from src.user.auth import current_active_user
@@ -24,9 +24,9 @@ async def read_user_by_id(
     user: schemas.User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),
 ):
-    user = await services.get_user_by_id(session, id_user)
-    if user is not None:
-        return user
+    current_user = await services.get_user_by_id(session, id_user)
+    if current_user is not None:
+        return current_user
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"User {id_user} not found",
@@ -39,9 +39,9 @@ async def read_user_by_id_telegram(
     user: schemas.User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),
 ):
-    user = await services.get_user_by_id_telegram(session, id_telegram)
-    if user is not None:
-        return user
+    current_user = await services.get_user_by_id_telegram(session, id_telegram)
+    if current_user is not None:
+        return current_user
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"User {id_telegram} not found",

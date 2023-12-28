@@ -3,23 +3,19 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from src.config import (
+from src.core.config import (
     DOCKER_DB_HOST,
     DOCKER_DB_NAME,
     DOCKER_DB_PASSWORD,
     DOCKER_DB_PORT,
     DOCKER_DB_USER,
 )
-from src.database import Base
-from src.operation.models import CategoryUser, KindOperationEnum, Operation
-from src.user.models import User
+from src.core.database import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-# section = config.config_ini_section
-# config.set_section_option(section, "DATABASE_URL", DATABASE_URL)
 
 config.set_main_option(
     "sqlalchemy.url",

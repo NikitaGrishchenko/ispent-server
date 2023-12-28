@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Enum, ForeignKey, Integer, String, UniqueConstraint
 
-from src.database import Base
+from src.core.database import Base
 from src.operation.enum import KindOperationEnum
 
 

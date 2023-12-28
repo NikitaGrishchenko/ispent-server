@@ -1,5 +1,5 @@
+from src.core.schemas import SchemaResponce
 from src.operation.schemas import CategoryUserRead
-from src.schemas import SchemaResponce
 
 
 class TotalByCategories(SchemaResponce):

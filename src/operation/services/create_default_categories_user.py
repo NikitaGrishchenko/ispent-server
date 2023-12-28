@@ -1,7 +1,7 @@
 import contextlib
 
-from src.config import DEFAULT_USER_OPERATION
-from src.database import get_async_session
+from src.core.config import DEFAULT_USER_OPERATION
+from src.core.database import get_async_session
 
 from .. import models
 

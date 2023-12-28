@@ -1,5 +1,5 @@
+from src.core.schemas import BaseSchema
 from src.operation.schemas import OperationRead
-from src.schemas import BaseSchema
 
 from .total_by_categories import TotalByCategories
 

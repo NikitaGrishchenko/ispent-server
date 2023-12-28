@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List
 
-from src.schemas import BaseSchema, SchemaResponce
+from src.core.schemas import BaseSchema, SchemaResponce
 
 from ..enum import KindOperationEnum
 from .category import CategoryUserRead

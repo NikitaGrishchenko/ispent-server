@@ -2,7 +2,7 @@ from datetime import datetime
 
 from fastapi_users import schemas
 
-from src.schemas import BaseSchema, SchemaResponce
+from src.core.schemas import BaseSchema, SchemaResponce
 
 
 class User(BaseSchema):

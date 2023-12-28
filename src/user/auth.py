@@ -5,7 +5,7 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 
-from src.config import SECRET
+from src.core.config import SECRET
 
 from .manager import get_user_manager
 from .models import User
