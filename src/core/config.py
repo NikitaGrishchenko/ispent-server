@@ -9,6 +9,7 @@ TOKEN = str(os.getenv("TOKEN"))
 DATABASE_URL = str(os.getenv("DATABASE_URL"))
 
 SECRET = str(os.getenv("SECRET"))
+DOMAIN = str(os.getenv("DOMAIN", default="localhost"))
 
 DOCKER_DB_NAME = str(os.getenv("DOCKER_DB_NAME"))
 DOCKER_DB_USER = str(os.getenv("DOCKER_DB_USER"))
