@@ -1,6 +1,8 @@
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
+from fastapi_mail import ConnectionConfig
 
 load_dotenv()
 
@@ -16,6 +18,27 @@ DOCKER_DB_USER = str(os.getenv("DOCKER_DB_USER"))
 DOCKER_DB_PASSWORD = str(os.getenv("DOCKER_DB_PASSWORD"))
 DOCKER_DB_HOST = str(os.getenv("DOCKER_DB_HOST"))
 DOCKER_DB_PORT = str(os.getenv("DOCKER_DB_PORT"))
+
+
+SMTP_USERNAME = str(os.getenv("SMTP_USERNAME"))
+SMTP_PASSWORD = str(os.getenv("SMTP_PASSWORD"))
+SMTP_FROM = str(os.getenv("SMTP_FROM"))
+SMTP_PORT = str(os.getenv("SMTP_PORT"))
+SMTP_SERVER = str(os.getenv("SMTP_SERVER"))
+SMTP_FROM_NAME = str(os.getenv("SMTP_FROM_NAME"))
+
+
+SMTP_CONFIG = ConnectionConfig(
+    MAIL_USERNAME=SMTP_USERNAME,
+    MAIL_PASSWORD=SMTP_PASSWORD,
+    MAIL_FROM=SMTP_FROM,
+    MAIL_PORT=SMTP_PORT,
+    MAIL_SERVER=SMTP_SERVER,
+    MAIL_FROM_NAME=SMTP_FROM_NAME,
+    MAIL_STARTTLS=True,
+    MAIL_SSL_TLS=False,
+    TEMPLATE_FOLDER=Path(__file__).parent / "templates",
+)
 
 
 DEFAULT_USER_OPERATION = [

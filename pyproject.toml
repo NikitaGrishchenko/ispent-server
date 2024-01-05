@@ -17,6 +17,7 @@ python-dotenv = "^1.0.0"
 asyncpg = "^0.28.0"
 fastapi-users = {extras = ["sqlalchemy"], version = "^12.1.2"}
 pyhumps = "^3.8.0"
+fastapi-mail = "^1.4.1"
 
 
 [build-system]

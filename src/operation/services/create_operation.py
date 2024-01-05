@@ -7,7 +7,7 @@ from .. import models, schemas
 
 
 async def create_operation(session: AsyncSession, operation: schemas.OperationCreate):
-    if operation.date.date() > datetime.datetime.utcnow().date():
+    if operation.date.date() > datetime.datetime.now().date():
         raise HTTPException(status_code=500, detail="Incorrect date")
 
     new_operation = models.Operation(

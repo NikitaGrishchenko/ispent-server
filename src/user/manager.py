@@ -10,6 +10,7 @@ from src.operation.services import create_category_user, create_default_categori
 from src.user.models import User
 
 from .schemas import UserCreate
+from .services import send_user_confirm_email
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
@@ -18,6 +19,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         await create_default_categories_user(user.id)
+        await send_user_confirm_email(user.id)
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Optional[Request] = None
