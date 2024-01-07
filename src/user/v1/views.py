@@ -68,3 +68,11 @@ async def read_overview_user(
         "last_operations": last_operations,
         "total_by_categories": total_by_categories,
     }
+
+
+@router.get("/send-confirm-mail/")
+async def send_confirm_mail(
+    user: schemas.User = Depends(current_active_user),
+    session: AsyncSession = Depends(get_async_session),
+):
+    return await services.create_or_update_confirm_email_token(user.id)
