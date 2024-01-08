@@ -5,11 +5,11 @@ from src.core.config import SMTP_CONFIG
 from .create_or_update_confirm_email_token import create_or_update_confirm_email_token
 
 
-async def send_user_confirm_email(user_id: int):
-    token = await create_or_update_confirm_email_token(user_id)
+async def send_user_confirm_email(user):
+    token = await create_or_update_confirm_email_token(user.id)
     message = MessageSchema(
         subject="Verification E-mail",
-        recipients=["grishchenkonikita87@yandex.ru"],
+        recipients=[f"{user.email}"],
         template_body=[token],
         subtype=MessageType.html,
     )

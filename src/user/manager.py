@@ -19,7 +19,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         await create_default_categories_user(user.id)
-        await send_user_confirm_email(user.id)
+        await send_user_confirm_email(user)
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Optional[Request] = None

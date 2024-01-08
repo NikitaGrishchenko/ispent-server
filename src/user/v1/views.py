@@ -60,6 +60,7 @@ async def read_overview_user(
         total_by_categories,
     ) = await services.get_overview_data_user(session, user.id)
     last_operations = await get_last_operations(session, user.id, 5)
+    banners = await services.get_banners(session, user)
 
     return {
         "total_balance": total_balance,
@@ -67,12 +68,22 @@ async def read_overview_user(
         "total_expenses": total_expenses,
         "last_operations": last_operations,
         "total_by_categories": total_by_categories,
+        "banners": banners,
     }
 
 
-@router.get("/send-confirm-mail/")
-async def send_confirm_mail(
+@router.get("/email/send-confirm/")
+async def send_confirm_email(
     user: schemas.User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),
 ):
-    return await services.create_or_update_confirm_email_token(user.id)
+    return await services.send_user_confirm_email(user)
+
+
+@router.get("/email/confirm/", response_model=schemas.UserRead)
+async def confirm_token(
+    token: str,
+    user: schemas.User = Depends(current_active_user),
+    session: AsyncSession = Depends(get_async_session),
+):
+    return await services.confirm_email_token(session, token, user.id)
