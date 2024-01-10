@@ -35,8 +35,8 @@ SMTP_CONFIG = ConnectionConfig(
     MAIL_PORT=SMTP_PORT,
     MAIL_SERVER=SMTP_SERVER,
     MAIL_FROM_NAME=SMTP_FROM_NAME,
-    MAIL_STARTTLS=True,
-    MAIL_SSL_TLS=False,
+    MAIL_STARTTLS=False,
+    MAIL_SSL_TLS=True,
     TEMPLATE_FOLDER=Path(__file__).parent / "templates",
 )
 

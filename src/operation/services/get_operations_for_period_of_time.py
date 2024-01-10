@@ -22,5 +22,4 @@ async def get_operations_for_period_of_time(
         .where(models.Operation.date <= end_date)
     )
     operations_db = await session.execute(stmt)
-
-    return sort_operation_by_days(operations_db.scalars().all())
+    return operations_db.scalars().all()

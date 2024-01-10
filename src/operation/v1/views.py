@@ -1,3 +1,5 @@
+import datetime
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -14,13 +16,13 @@ router = APIRouter()
 async def read_operations(
     user: User = Depends(current_active_user),
     session: AsyncSession = Depends(get_async_session),
-    starting_date: str | None = None,
-    end_date: str | None = None,
+    starting_date: datetime.date | None = None,
+    end_date: datetime.date | None = None,
 ):
     operations = await services.get_operations_for_period_of_time(
         session, user.id, starting_date, end_date
     )
-    return operations
+    return services.sort_operation_by_days(operations)
 
 
 @router.post("/create/", response_model=schemas.OperationCreate)
