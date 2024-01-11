@@ -1,6 +1,7 @@
+import re
 from typing import Optional
 
-from fastapi import Depends, Request
+from fastapi import Depends, HTTPException, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin, exceptions, models, schemas
 from fastapi_users.db import SQLAlchemyUserDatabase
 
@@ -31,6 +32,11 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     ):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 
+    def validate_email(self, email: str):
+        pattern = r"\"?([-a-zA-Z0-9.`?{}]+@\w+\.\w+)\"?"
+        if not re.match(pattern, email):
+            raise HTTPException(status_code=500, detail="Incorrect email")
+
     async def create(
         self,
         user_create: UserCreate,
@@ -39,15 +45,17 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     ) -> models.UP:
         await self.validate_password(user_create.password, user_create)
 
+        self.validate_email(user_create.email)
+
         existing_user = await self.user_db.get_by_email(user_create.email)
         if existing_user is not None:
             raise exceptions.UserAlreadyExists()
-
         user_dict = (
             user_create.create_update_dict()
             if safe
             else user_create.create_update_dict_superuser()
         )
+
         password = user_dict.pop("password")
         user_dict["hashed_password"] = self.password_helper.hash(password)
 

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from fastapi_users import schemas
+from humps import camelize
 
 from src.core.schemas import BaseSchema
 
@@ -44,6 +45,10 @@ class UserCreate(schemas.BaseUserCreate):
     first_name: str | None = None
     last_name: str | None = None
     password: str
+
+    class Config:
+        alias_generator = camelize
+        populate_by_name = True
 
 
 class UserUpdate(schemas.BaseUserUpdate):
