@@ -7,7 +7,7 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 
 from src.core.config import SECRET
 from src.core.database import get_async_session, get_user_db
-from src.operation.services import create_category_user, create_default_categories_user
+from src.operation.services import create_default_categories_user
 from src.user.models import User
 
 from .schemas import UserCreate
