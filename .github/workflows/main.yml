@@ -34,12 +34,13 @@ jobs:
     needs: build
     runs-on: ubuntu-20.04
     steps:
-      uses: D3rHase/ssh-command-action@v0.2.2
-      with:
-        host: ${{secrets.SSH_HOST}}
-        user: ${{secrets.SSH_USER}}
-        private_key: ${{secrets.SSH_PRIVATE_KEY}}
-        command: |
-          cd ${{ secrets.PROJECT_FOLDER }};
-          docker-compose pull;
-          docker-compose up -d;
+      - name: SSH connect to server and run commands
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SSH_USER}}
+          private_key: ${{secrets.SSH_PRIVATE_KEY}}
+          command: |
+            cd ${{ secrets.PROJECT_FOLDER }};
+            docker-compose pull;
+            docker-compose up -d;
