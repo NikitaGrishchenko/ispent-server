@@ -29,23 +29,16 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_PROJECT }}
 
-
-
-
-        # run: docker build -t grishchenkonikita/ispent:backend -f .\docker\Dockerfile .
-
-  # deploy:
-  #   - name: Run command on remote server
-  #     needs: build
-  #     uses: D3rHase/ssh-command-action@v0.2.2
-  #     with:
-  #       host: ${{secrets.SSH_HOST}}
-  #       user: ${{secrets.SSH_USER}}
-  #       private_key: ${{secrets.SSH_PRIVATE_KEY}}
-  #       command: |
-  #         cd ${{ secrets.PROJECT_FOLDER }};
-  #         git checkout main;
-  #         git pull;
-  #         docker-compose --file docker-compose.prod.yml down;
-  #         docker-compose --file docker-compose.prod.yml up -d;
-  #         docker system prune --all --force;
+  deploy:
+    name: Deploy to remove server
+    needs: build
+    runs-on: ubuntu-20.04
+    steps:
+      uses: D3rHase/ssh-command-action@v0.2.2
+        host: ${{secrets.SSH_HOST}}
+        user: ${{secrets.SSH_USER}}
+        private_key: ${{secrets.SSH_PRIVATE_KEY}}
+        command: |
+          cd ${{ secrets.PROJECT_FOLDER }};
+          docker-compose pull;
+          docker-compose up -d;
