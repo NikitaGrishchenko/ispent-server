@@ -43,5 +43,5 @@ jobs:
           private_key: ${{secrets.SSH_PRIVATE_KEY}}
           command: |
             cd ${{ secrets.PROJECT_FOLDER }};
-            docker compose pull;
+            docker image pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_PROJECT }};
             docker compose up -d;
