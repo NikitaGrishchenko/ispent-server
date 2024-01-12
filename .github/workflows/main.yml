@@ -1,8 +1,8 @@
 name: ispent backend
 
-on: workflow_dispatch
-  # pull_request:
-    # branches: [ master ]
+on:
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
