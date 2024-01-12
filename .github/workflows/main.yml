@@ -1,4 +1,4 @@
-name: ${{ PROJECT_NAME }}
+name: ispent backend
 
 on: workflow_dispatch
   # pull_request:
